@@ -14,9 +14,6 @@ from languages import *
 class App:
     def __init__(self):
         self.win = Tk()
-        # self.win.geometry('496x366+260+200')
-        # self.win.resizable(0, 0)  # 这个是设置窗口不可缩放
-        self.win.update()  # 一定要刷新界面，否则打印出的值是1
         print("当前窗口的宽度为", self.win.winfo_width())
         print("当前窗口的高度为", self.win.winfo_height())
         self.language = Language('eng')
@@ -68,18 +65,12 @@ class App:
 
         for key in self.lanDict:
             key.configure(text=self.lanDict[key])
-        # self.stStatus.set(self.stStatus.get())
-        # self.statusBar.update()
 
     def _chi(self):
-        # self.win.geometry('496x330+260+200')
-        # self.win.resizable(0, 0)  # 这个是设置窗口不可缩放
         self.language = Language('chi')
         self.refreshLabels(self.language)
 
     def _eng(self):
-        # self.win.geometry('496x366+260+200')
-        # self.win.resizable(0, 0)  # 这个是设置窗口不可缩放
         self.language = Language('eng')
         self.refreshLabels(self.language)
 
@@ -142,25 +133,21 @@ class App:
         # fmFileDir.pack(side=TOP, fill=BOTH, expand=YES)
         fmFileDir.grid(row=0, ipadx=2, padx=2, sticky=W + E + N + S)
         self.labFileDir = ttk.Label(fmFileDir, text=self.language.labFileDir, font=('Arial', 16))
-        self.labFileDir.grid(row=0, column=0, columnspan=2, ipadx=5, padx=5, sticky=W)    # .pack(side=TOP, fill=BOTH, expand=YES, padx=5)
+        self.labFileDir.grid(row=0, column=0, columnspan=2, ipadx=5, padx=5, sticky=W)
 
         self.entry = ttk.Entry(fmFileDir, textvariable=self.stFileDir,
                                font=('Arial', 12),
-                               foreground='green', style='my.TEntry')    # width=59
-        # self.entry.pack(side=TOP and LEFT, fill=X, expand=YES, ipadx=5, ipady=5, padx=5)
+                               foreground='green', style='my.TEntry')
         self.entry.grid(row=1, column=0, ipadx=5, padx=5, sticky=E+W)
         self.btnFileDir = ttk.Button(fmFileDir, text=self.language.btnFileDir, style='my.TButton', width=12,
                    command=self.open_dir)  # 绑定 open_dir 方法
         self.btnFileDir.grid(row=1, column=1, ipadx=5, padx=5, sticky=E)
-                    #pack(side=LEFT, ipadx=5, ipady=5, padx=5)  # fill=X, expand=YES,
         fmFileDir.columnconfigure(0, weight=1)  # 尺寸适配
 
         fmSerial = ttk.Frame(self.win)
-        # fmSerial.pack(side=TOP, fill=BOTH, expand=YES)
         fmSerial.grid(row=1, ipadx=2, padx=2, sticky=W + E + N + S)
         self.labPort = ttk.Label(fmSerial, text=self.language.labPort, font=('Arial', 16))
         self.labPort.grid(row=0, ipadx=5, padx=5, sticky=W)
-            # .pack(side=TOP, fill=BOTH, expand=YES, padx=5)
         cb = ttk.Combobox(fmSerial, textvariable=self.stPort, width=20, font=12)
 
         # list of serial port number
@@ -174,84 +161,69 @@ class App:
                 port_list_number.append(each_port[0])
         # 为 Combobox 设置列表项
         cb['values'] = port_list_number
-        # cb.pack(side=TOP and LEFT, fill=X, ipadx=5, ipady=5, padx=5)
         cb.grid(row=1, ipadx=5, padx=5, sticky=W)
 
         fmProduct = ttk.Frame(self.win)
-        # fmProduct.pack(side=TOP, fill=BOTH, expand=YES)
         fmProduct.grid(row=2, ipadx=2, padx=2, sticky=W + E + N + S)
         self.labProduct = ttk.Label(fmProduct, text=self.language.labProduct, font=('Arial', 16))
-        self.labProduct.grid(row=0, column=0, ipadx=5, padx=5, sticky=W)    #.pack(side=TOP and LEFT, padx=5)
+        self.labProduct.grid(row=0, column=0, ipadx=5, padx=5, sticky=W)
         c = 1
         for p in product:
-            rbProduct = ttk.Radiobutton(fmProduct, text=p, value=p, style='my.TRadiobutton',   # font=('Arial', 12)
+            rbProduct = ttk.Radiobutton(fmProduct, text=p, value=p, style='my.TRadiobutton',
                                      variable=self.strProduct, command=self.chooseProduct)
             rbProduct.grid(row=0, column=c, ipadx=5, padx=5, sticky=W) # pack(side=LEFT, padx=5)
             c += 1
         self.strProduct.set('Bittle')
 
         fmMode = ttk.Frame(self.win)
-        # fmMode.pack(side=TOP, fill=BOTH, expand=YES)
         fmMode.grid(row=3, ipadx=2, padx=2, sticky=W + E + N + S)
         self.labMode = ttk.Label(fmMode, text=self.language.labMode, font=('Arial', 16), )
-        self.labMode.grid(row=0, column=0, ipadx=5, padx=5, sticky=W)  #.pack(side=TOP and LEFT, padx=5)
+        self.labMode.grid(row=0, column=0, ipadx=5, padx=5, sticky=W)
         c = 1
         self.rbnModes = []
         for i in range(len(self.language.rbnModes)):
-            rbMode = ttk.Radiobutton(fmMode, text=self.language.rbnModes[i], value=i, style='my.TRadiobutton',    # font=('Arial', 12),
+            rbMode = ttk.Radiobutton(fmMode, text=self.language.rbnModes[i], value=i, style='my.TRadiobutton',
                                      variable=self.intMode, command=self.chooseMode)
-            rbMode.grid(row=0, column=c, ipadx=5, padx=5, sticky=W)    # pack(side=LEFT, padx=5)
+            rbMode.grid(row=0, column=c, ipadx=5, padx=5, sticky=W)
             self.rbnModes.append(rbMode)
             c += 1
         self.strMode.set('Walk')
         self.strFileName.set("OpenCat" + self.strMode.get() + ".ino.hex")
 
         fmUploadFile = ttk.Frame(self.win)
-        # fmUploadFile.pack(side=TOP, fill=BOTH, expand=YES)
         fmUploadFile.grid(row=4, ipadx=2, padx=2, sticky=W + E + N + S)
         ttk.Label(fmUploadFile, text=self.language.labFile, font=('Arial', 16), ) \
-            .grid(row=0, column=0, padx=5, sticky=W)    #.pack(side=TOP and LEFT, padx=5)
+            .grid(row=0, column=0, padx=5, sticky=W)
 
         self.intVarWI = IntVar()
         self.intVarWI.set(1)
         self.checkBnWI = ttk.Checkbutton(fmUploadFile, text=self.language.cbnFileWI, style='my.TCheckbutton',    # font=('Arial', 12),
                                  variable=self.intVarWI, onvalue=1, offvalue=0,    # 默认选中
-                                 command=self.changeSelect)    # 将选中事件绑定到self.change方法
-        # checkBnWI.pack(side=LEFT, padx=5)
+                                 command=self.changeSelect)    # 将选中事件绑定到self.changeSelect方法
         self.checkBnWI.grid(row=0, column=1,  sticky=W)
         self.intVarOC = IntVar()
         self.intVarOC.set(1)
         self.checkBnOC = ttk.Checkbutton(fmUploadFile, text=self.language.cbnFileMF, style='my.TCheckbutton',     # font=('Arial', 12),
                                     variable=self.intVarOC, onvalue=1, offvalue=0,  # 默认选中
-                                    command=self.changeSelect)  # 将选中事件绑定到self.change方法
-        # checkBnOC.pack(side=LEFT, padx=5)
+                                    command=self.changeSelect)  # 将选中事件绑定到self.changeSelect方法
         self.checkBnOC.grid(row=0, column=2, ipadx=5, padx=5, sticky=W)
 
         fmNote = ttk.Frame(self.win)
-        # fmNote.pack(side=TOP, fill=BOTH, expand=YES)
         fmNote.grid(row=5, ipadx=2, padx=2, pady=5, sticky=W + E + N + S)
         self.labNote = ttk.Label(fmNote, text=self.language.labNote, font=('Arial', 12), foreground='red')
-        self.labNote.grid(row=0, ipadx=5, padx=5, sticky=W)  # .pack(side=TOP and LEFT, padx=5)
-            # .pack(anchor=W, ipadx=5, ipady=5, padx=5, pady=5)
+        self.labNote.grid(row=0, ipadx=5, padx=5, sticky=W)
 
         fmUpload = ttk.Frame(self.win)
-        # fmUpload.pack(side=TOP, fill=BOTH, expand=YES)
         fmUpload.grid(row=6, ipadx=2, padx=2, pady=5, sticky=W + E + N + S)
-        self.btnUpload = ttk.Button(fmUpload, text=self.language.btnUpload, style='my.TButton',  command=self.autoupload)    # width=63, 绑定 autoupload 方法
-        # self.btnUpload.pack(side=TOP, fill=BOTH, expand=YES, ipadx=5, ipady=5, padx=5, pady=10)
+        self.btnUpload = ttk.Button(fmUpload, text=self.language.btnUpload, style='my.TButton',  command=self.autoupload)    # 绑定 autoupload 方法
         self.btnUpload.grid(row=0, ipadx=5, padx=5, sticky=W + E + N + S)
         fmUpload.columnconfigure(0, weight=1)  # 尺寸适配
         fmUpload.rowconfigure(0, weight=1)  # 尺寸适配
 
         fmStatus = ttk.Frame(self.win)
-        # fmStatus.pack(side=TOP, fill=BOTH, expand=YES)
         fmStatus.grid(row=7, ipadx=2, padx=2, pady=5, sticky=W + E + N + S)
-        # self.win.grid_rowconfigure(7, weight=1)
-        self.statusBar = ttk.Label(fmStatus, textvariable=self.stStatus, font=('Arial', 16), relief=SUNKEN)    # width=59,
-        # self.statusBar.pack(side=BOTTOM, fill=X)
+        self.statusBar = ttk.Label(fmStatus, textvariable=self.stStatus, font=('Arial', 16), relief=SUNKEN)
         self.statusBar.grid(row=0, ipadx=5, padx=5, sticky=W + E + N + S)
-        # fmStatus.grid_rowconfigure(0, weight=1)
-        # self.statusBar.grid(row=0, column=1, sticky=W + E + N + S)
         fmStatus.columnconfigure(0, weight=1)  # 尺寸适配
         fmStatus.rowconfigure(0, weight=1)  # 尺寸适配
 
