@@ -10,20 +10,9 @@ from setuptools import setup
 
 APP = ['Flash_Uploader.py']
 APP_NAME = "FlashUploader"
-DATA_FILES = ['defaultpath.txt', 'logo.icns']
-
+DATA_FILES = ['defaultpath.txt', 'avrdude','avrdude.conf','logo.icns']
 OPTIONS = {
-    'argv_emulation': True,
-    'iconfile': 'logo.icns',
-    'plist': {
-        'CFBundleName': APP_NAME,
-        'CFBundleDisplayName': APP_NAME,
-        'CFBundleGetInfoString': "Upload firmwares",
-        'CFBundleIdentifier': "https://www.petoi.com/",
-        'CFBundleVersion': "1.0.0",
-        'CFBundleShortVersionString': "1.0.0",
-        'NSHumanReadableCopyright': u"Copyright © 2022, Petoi LLC, All Rights Reserved"
-    }
+    'iconfile': 'logo.icns'
 }
 
 setup(

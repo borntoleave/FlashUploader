@@ -5,6 +5,7 @@ import serial.tools.list_ports
 import platform
 import time
 from subprocess import call
+import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
@@ -14,10 +15,17 @@ from languages import *
 class App:
     def __init__(self):
         self.win = Tk()
-        print("当前窗口的宽度为", self.win.winfo_width())
-        print("当前窗口的高度为", self.win.winfo_height())
+        if self.win.call('tk', 'windowingsystem') == 'win32':
+            self.win.geometry('720x360+260+200')
+        elif self.win.call('tk', 'windowingsystem') == 'aqua':
+            self.win.geometry('720x306+260+200')
+        self.win.update()
+        tk.Grid.rowconfigure(self.win, 0, weight=1)
+        tk.Grid.columnconfigure(self.win, 0, weight=1)
         self.language = Language('eng')
         self.initWidgets()
+        print("当前窗口的宽度为", self.win.winfo_width())
+        print("当前窗口的高度为", self.win.winfo_height())
         self.win.after(1, lambda: self.win.focus_force())  # 强制主界面获取focus
 
     def refreshLabels(self, language):
@@ -30,6 +38,7 @@ class App:
             self.rbnModes[0]: language.rbnModes[0],
             self.rbnModes[1]: language.rbnModes[1],
             self.rbnModes[2]: language.rbnModes[2],
+            self.labFile: language.labFile,
             self.checkBnWI: language.cbnFileWI,
             self.checkBnOC: language.cbnFileMF,
             self.labNote: language.labNote,
@@ -77,7 +86,7 @@ class App:
     def initWidgets(self):
         self.win.title(self.language.title)
 
-        if self.win.call('tk','windowingsystem') == 'win32':
+        if self.win.call('tk', 'windowingsystem') == 'win32':
             self.win.iconbitmap(r'./images/Petoi.ico')
             self.menuBar = Menu(self.win)
             self.win.configure(menu=self.menuBar)
@@ -87,7 +96,7 @@ class App:
             self.LanguageMenu.add_command(label=self.language.labChi, command=self._chi)
             self.menuBar.add_command(label=self.language.labAbout, command=self.about)
             self.menuBar.add_command(label=self.language.labExit, command=self.win.quit)
-        elif self.win.call('tk','windowingsystem') == 'aqua':
+        elif self.win.call('tk', 'windowingsystem') == 'aqua':
             self.win.iconbitmap(r'./logo.icns')
             self.win.option_add('*tearOff', FALSE)
             menubar = Menu(self.win, background='#ff8000', foreground='black', activebackground='white',
@@ -122,27 +131,43 @@ class App:
 
         # 设置 Button 字体
         style = ttk.Style()
-        style.configure('my.TButton', font=('Arial', 14))
+        # style.configure('my.TButton', font=('Arial', 14), background='gray')
         style.configure('my.TRadiobutton', font=('Arial', 12))
         style.configure('my.TCheckbutton', font=('Arial', 12))
-        style.configure('my.TEntry', background='white')
+        # style.configure('my.TEntry', background='white')
 
         product = ('Bittle', 'Nybble')
 
-        fmFileDir = ttk.Frame(self.win)
+        # fmFileDir = ttk.Frame(self.win)
+        fmFileDir = tk.Frame(self.win)
         # fmFileDir.pack(side=TOP, fill=BOTH, expand=YES)
         fmFileDir.grid(row=0, ipadx=2, padx=2, sticky=W + E + N + S)
-        self.labFileDir = ttk.Label(fmFileDir, text=self.language.labFileDir, font=('Arial', 16))
-        self.labFileDir.grid(row=0, column=0, columnspan=2, ipadx=5, padx=5, sticky=W)
+        # self.labFileDir = ttk.Label(fmFileDir, text=self.language.labFileDir, font=('Arial', 16))
+        self.labFileDir = tk.Label(fmFileDir, text=self.language.labFileDir, font=('Arial', 16))
+        self.labFileDir.grid(row=0, columnspan=2, ipadx=2, padx=2, sticky=W)
 
-        self.entry = ttk.Entry(fmFileDir, textvariable=self.stFileDir,
-                               font=('Arial', 12),
-                               foreground='green', style='my.TEntry')
-        self.entry.grid(row=1, column=0, ipadx=5, padx=5, sticky=E+W)
-        self.btnFileDir = ttk.Button(fmFileDir, text=self.language.btnFileDir, style='my.TButton', width=12,
-                   command=self.open_dir)  # 绑定 open_dir 方法
-        self.btnFileDir.grid(row=1, column=1, ipadx=5, padx=5, sticky=E)
-        fmFileDir.columnconfigure(0, weight=1)  # 尺寸适配
+        # self.entry = ttk.Entry(fmFileDir, textvariable=self.stFileDir,
+        #                        font=('Arial', 12),
+        #                        foreground='green', style='my.TEntry')
+        if self.win.call('tk', 'windowingsystem') == 'win32':
+            self.entry = tk.Entry(fmFileDir, textvariable=self.stFileDir,
+                               font=('Arial', 16), foreground='green', background='white')
+        elif self.win.call('tk', 'windowingsystem') == 'aqua':
+            self.entry = tk.Entry(fmFileDir, textvariable=self.stFileDir,
+                                  font=('Arial', 12), foreground='green', background='white')
+        self.entry.grid(row=1, column=0, ipadx=5, padx=5, sticky=E + W)
+        # self.btnFileDir = ttk.Button(fmFileDir, text=self.language.btnFileDir, style='my.TButton', width=12,
+        #            command=self.open_dir)  # 绑定 open_dir 方法
+        if self.win.call('tk', 'windowingsystem') == 'win32':
+            self.btnFileDir = tk.Button(fmFileDir, text=self.language.btnFileDir, font=('Arial', 14), foreground='blue',
+                                        command=self.open_dir)  # 绑定 open_dir 方法
+        elif self.win.call('tk', 'windowingsystem') == 'aqua':
+            self.btnFileDir = tk.Button(fmFileDir, text=self.language.btnFileDir, font=('Arial', 14), foreground='blue',
+                                        background='gray', command=self.open_dir)  # 绑定 open_dir 方法
+        self.btnFileDir.grid(row=1, column=1, ipadx=5, padx=5, sticky=E + W)
+        fmFileDir.columnconfigure(0, weight=8)  # 尺寸适配
+        fmFileDir.columnconfigure(1, weight=1)  # 尺寸适配
+        fmFileDir.rowconfigure(1, weight=1)  # 尺寸适配
 
         fmSerial = ttk.Frame(self.win)
         fmSerial.grid(row=1, ipadx=2, padx=2, sticky=W + E + N + S)
@@ -155,7 +180,7 @@ class App:
         port_list = list(serial.tools.list_ports.comports())
         if len(port_list) <= 0:
             port_list_number = [' ']
-            # print("The Serial port can't find!")
+            print("The Serial port can't find!")
         else:
             for each_port in port_list:
                 port_list_number.append(each_port[0])
@@ -177,7 +202,7 @@ class App:
 
         fmMode = ttk.Frame(self.win)
         fmMode.grid(row=3, ipadx=2, padx=2, sticky=W + E + N + S)
-        self.labMode = ttk.Label(fmMode, text=self.language.labMode, font=('Arial', 16), )
+        self.labMode = ttk.Label(fmMode, text=self.language.labMode, font=('Arial', 16))
         self.labMode.grid(row=0, column=0, ipadx=5, padx=5, sticky=W)
         c = 1
         self.rbnModes = []
@@ -192,8 +217,8 @@ class App:
 
         fmUploadFile = ttk.Frame(self.win)
         fmUploadFile.grid(row=4, ipadx=2, padx=2, sticky=W + E + N + S)
-        ttk.Label(fmUploadFile, text=self.language.labFile, font=('Arial', 16), ) \
-            .grid(row=0, column=0, padx=5, sticky=W)
+        self.labFile = ttk.Label(fmUploadFile, text=self.language.labFile, font=('Arial', 16))
+        self.labFile.grid(row=0, column=0, padx=5, sticky=W)
 
         self.intVarWI = IntVar()
         self.intVarWI.set(1)
@@ -213,9 +238,16 @@ class App:
         self.labNote = ttk.Label(fmNote, text=self.language.labNote, font=('Arial', 12), foreground='red')
         self.labNote.grid(row=0, ipadx=5, padx=5, sticky=W)
 
-        fmUpload = ttk.Frame(self.win)
+        # fmUpload = ttk.Frame(self.win)
+        fmUpload = tk.Frame(self.win)
         fmUpload.grid(row=6, ipadx=2, padx=2, pady=5, sticky=W + E + N + S)
-        self.btnUpload = ttk.Button(fmUpload, text=self.language.btnUpload, style='my.TButton',  command=self.autoupload)    # 绑定 autoupload 方法
+        # self.btnUpload = ttk.Button(fmUpload, text=self.language.btnUpload, style='my.TButton',  command=self.autoupload)    # 绑定 autoupload 方法
+        if self.win.call('tk', 'windowingsystem') == 'win32':
+            self.btnUpload = tk.Button(fmUpload, text=self.language.btnUpload, font=('Arial', 14), foreground='blue',
+                                       command=self.autoupload)  # 绑定 autoupload 方法
+        elif self.win.call('tk', 'windowingsystem') == 'aqua':
+            self.btnUpload = tk.Button(fmUpload, text=self.language.btnUpload, font=('Arial', 14), foreground='blue',
+                                       background='gray', command=self.autoupload)    # 绑定 autoupload 方法
         self.btnUpload.grid(row=0, ipadx=5, padx=5, sticky=W + E + N + S)
         fmUpload.columnconfigure(0, weight=1)  # 尺寸适配
         fmUpload.rowconfigure(0, weight=1)  # 尺寸适配
