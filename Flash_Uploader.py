@@ -321,8 +321,14 @@ class App:
 
     def open_dir(self):
         # 调用 askdirectory 方法打开目录
-        dirpath = filedialog.askdirectory(title=self.language.titleFileDir,
-                                          initialdir=self.stFileDir)    # 初始目录
+        logger.debug(f"{self.stFileDir.get()}")
+        if (self.stFileDir.get()).find('./release') != -1:
+            dirpath = filedialog.askdirectory(title=self.language.titleFileDir,
+                                          initialdir=r'./release')    # 初始目录
+        else:
+            dirpath = filedialog.askdirectory(title=self.language.titleFileDir,
+                                              initialdir=self.stFileDir)  # 用户自定目录
+
         if dirpath:
             self.formalize(dirpath)
             with open('./defaultpath.txt', 'w') as f:  # 设置文件对象
