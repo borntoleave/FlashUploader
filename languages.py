@@ -33,15 +33,18 @@ class Language():
         self.titleWarning = "警告"
         self.msgFileDir = '请选择release文件夹!'
         self.msgPort = '请选择正确的串口!'
-        self.labStatus1 = "烧录中 ... "
-        self.labStatus2 = "烧录失败！"
-        self.labStatus3 = "烧录成功！"
+        self.labStatus1 = '烧录中 ... '
+        self.labStatus2 = '烧录失败！'
+        self.labStatus3 = '烧录成功！'
         self.titleVersion = '版本信息'
         self.msgVersion = '''版本：1.0.0 
         机器人固件烧录工具
         (C) 版权所有 2018-2022 派拓艺（深圳）科技有限责任公司
         https://www.petoi.com
         '''
+        self.msgRstOffsets = '舵机校准参数清零? (Y/N)'
+        self.msgCalibrateIMU = '''校准 IMU? (Y/N)
+        注意: 请确保将 Bittle / Nybble 保持水平放置。'''
 
     def resourceLagEng(self):
         self.title = 'Flash uploader'
@@ -68,10 +71,10 @@ class Language():
           So please make sure to keep Bittle / Nybble horizontal, 
           before uploading the Writing constant firmware.'''
         self.btnUpload = 'Upload'
-        self.titleWarning = "Warning"
-        self.labStatus1 = "Uploading ... "
-        self.labStatus2 = "firmware uploaded failed."
-        self.labStatus3 = "firmware uploaded successfully."
+        self.titleWarning = 'Warning'
+        self.labStatus1 = 'Uploading ... '
+        self.labStatus2 = 'firmware uploaded failed.'
+        self.labStatus3 = 'firmware uploaded successfully.'
         self.msgFileDir = 'Please choose the release folder!'
         self.msgPort = 'Please choose the correct serial port!'
         self.titleVersion = 'Version information'
@@ -80,3 +83,6 @@ class Language():
         (C) Copyright 2018-2022 Petoi LLC. All rights reserved.
         https://www.petoi.com
         '''
+        self.msgRstOffsets = 'Reset joint offsets? (Y/N)'
+        self.msgCalibrateIMU = '''Calibrate IMU? (Y/N)
+        Note: Lay the robot FLAT on a table'''

@@ -1,7 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 import serial.tools.list_ports
+from SerialCommunication import *    # module SerialCommunication.py
+import logging
 import platform
 import time
 from subprocess import call
@@ -11,6 +13,22 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox as msgbox
 from languages import *
+
+FORMAT = '%(asctime)-15s %(name)s - %(levelname)s - %(message)s'
+'''
+Level: The level determines the minimum priority level of messages to log. 
+Messages will be logged in order of increasing severity: 
+DEBUG is the least threatening, 
+INFO is also not very threatening, 
+WARNING needs attention, 
+ERROR needs immediate attention, 
+and CRITICAL means “drop everything and find out what’s wrong.” 
+The default starting point is INFO, 
+which means that the logging module will automatically filter out any DEBUG messages.
+'''
+# logging.basicConfig(level=logging.DEBUG, format=FORMAT)
+logging.basicConfig(level=logging.INFO, format=FORMAT)
+logger = logging.getLogger(__name__)
 
 class App:
     def __init__(self):
@@ -182,6 +200,8 @@ class App:
             port_list_number = [' ']
             print("The Serial port can't find!")
         else:
+            if len(port_list) == 1:
+                cb.set(port_list[0][0])
             for each_port in port_list:
                 port_list_number.append(each_port[0])
         # 为 Combobox 设置列表项
@@ -267,6 +287,7 @@ class App:
     def chooseProduct(self):
         print("self.strProduct is " + self.strProduct.get())
 
+
     def chooseMode(self):
         if self.intMode.get() == 0:
             self.strMode.set("Walk")
@@ -277,6 +298,7 @@ class App:
         print(self.strMode.get())
         self.strFileName.set("OpenCat" + self.strMode.get() + ".ino.hex")
         print(self.strFileName.get())
+
 
     def formalize(self, strdir=' '):
         sep = "/"
@@ -296,6 +318,7 @@ class App:
         self.stFileDir.set(strdir)
         print("self.stFileDir:" + self.stFileDir.get())
 
+
     def open_dir(self):
         # 调用 askdirectory 方法打开目录
         dirpath = filedialog.askdirectory(title=self.language.titleFileDir,
@@ -310,6 +333,44 @@ class App:
     def changeSelect(self):
         print("self.intVarWI:" + str(self.intVarWI.get()))
         print("self.intVarOC:" + str(self.intVarOC.get()))
+
+
+    def encode(self, in_str, encoding='utf-8'):
+        if isinstance(in_str, bytes):
+            return in_str
+        else:
+            return in_str.encode(encoding)
+
+
+    def WriteInstinctProcess(self, port):
+        ser = Communication(port, 115200, 0.5)
+        logger.info(f"Connect to usb serial port: {port}.")
+
+        while True:
+            time.sleep(0.01)
+            if ser.main_engine.in_waiting > 0:
+                x = str(ser.main_engine.readline())
+                logger.debug(f"{x}")
+                if x != "":
+                    questionMark = "Y/n"
+                    if x.find(questionMark) != -1:
+                        if x.find("Calibrate") != -1:
+                            retMsg = msgbox.askyesno(self.language.titleWarning, self.language.msgCalibrateIMU)
+                        elif x.find("Reset") != -1:
+                            retMsg = msgbox.askyesno(self.language.titleWarning, self.language.msgRstOffsets)
+                        else:
+                            retMsg = msgbox.askyesno(self.language.titleWarning, x[2:-5])
+                        if retMsg == True:
+                            ser.Send_data(self.encode("Y"))
+                        elif retMsg == False:
+                            ser.Send_data(self.encode("n"))
+                            if x.find("Calibrate") != -1:
+                                break
+                    elif x.find("sent to mpu.setXAccelOffset") != -1 or x.find("Ready!") != -1:
+                        break
+        ser.Close_Engine()
+        logger.info("close the serial port.")
+
 
     def autoupload(self):
         strProd = self.strProduct.get()
@@ -355,8 +416,9 @@ class App:
                 self.statusBar.update()
                 return
 
-            if ret == 0 and file == fnWriteI and self.intVarOC.get() == 1:
-                time.sleep(10)
+            if ret == 0 and file == fnWriteI:
+                time.sleep(5)
+                self.WriteInstinctProcess(port)
 
         if ret == 0:
             self.stStatus.set(self.language.labStatus3)
