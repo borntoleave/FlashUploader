@@ -15,6 +15,7 @@ class Language():
         self.labTrans = '切换语言'
         self.labChi = '中文'
         self.labEng = '英文'
+        self.labHelp = '帮助'
         self.labAbout = '关于'
         self.labExit = '退出'
         self.labFileDir = 'release文件夹位置:'
@@ -50,6 +51,7 @@ class Language():
         self.msgRstOffsets = '舵机校准参数清零? (Y/N)'
         self.msgCalibrateIMU = '''校准 IMU? (Y/N)
         注意: 请确保将 Bittle / Nybble 保持水平放置。'''
+        self.instinctFinish = '参数初始化完成！'
         self.msgFinish = '固件上传完成!'
         self.msgMode = '无效模式，请选择其他模式!'
         self.labStatusRest1 = '舵机校准参数清零......'
@@ -66,6 +68,7 @@ class Language():
         self.labTrans = 'Change Language'
         self.labChi = 'Chinese'
         self.labEng = 'English'
+        self.labHelp = 'Help'
         self.labAbout = 'About'
         self.labExit = 'Exit'
         self.labFileDir = 'The directory of release folder:'
@@ -106,6 +109,7 @@ class Language():
         self.msgRstOffsets = 'Reset joint offsets? (Y/N)'
         self.msgCalibrateIMU = '''Calibrate IMU? (Y/N)
         Note: Lay the robot FLAT on a table'''
+        self.instinctFinish = 'Parameters initialized!'
         self.msgFinish = 'Firmware upload complete!'
         self.msgMode = 'Invalide, please select another mode!'
         self.labStatusRest1 = 'Reset joint offsets...'
