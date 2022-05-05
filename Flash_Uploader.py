@@ -8,7 +8,6 @@
 import serial.tools.list_ports
 from SerialCommunication import *    # module SerialCommunication.py
 import logging
-import platform
 import time
 from subprocess import call
 import tkinter as tk
@@ -38,17 +37,18 @@ class App:
     def __init__(self):
         self.win = Tk()
         self.OSname = self.win.call('tk', 'windowingsystem')
-        self.systemName = platform.system()
-        if self.OSname == 'win32':
-            self.win.geometry('530x450+260+100')
-            self.backgroundColor = None
-        elif self.OSname == 'aqua':
+        self.shellOption = True
+        if self.OSname == 'aqua':
             self.win.geometry('530x356+260+200')
             self.backgroundColor ='gray'
-        if self.systemName=="Darwin" or self.systemName=="Linux":
-            self.shellOption = True
         else:
+            self.win.geometry('530x450+260+100')
+            self.backgroundColor = None
+
+        if self.OSname == 'win32':
             self.shellOption = False
+        else:
+            self.shellOption = True
         self.win.update()
         tk.Grid.rowconfigure(self.win, 0, weight=1)
         tk.Grid.columnconfigure(self.win, 0, weight=1)
@@ -82,35 +82,28 @@ class App:
         }
 
         self.win.title(language.title)
-
-        if self.OSname == 'win32':
-            self.win.iconbitmap(r'./images/Petoi.ico')
-            self.menuBar = Menu(self.win)
-            self.win.configure(menu=self.menuBar)
-            self.LanguageMenu = Menu(self.menuBar, tearoff=0)
-            self.menuBar.add_cascade(label=language.labTrans, menu=self.LanguageMenu)
-            self.LanguageMenu.add_command(label=language.labEng, command=self._eng)
-            self.LanguageMenu.add_command(label=language.labChi, command=self._chi)
-            self.menuBar.add_command(label=language.labAbout, command=self.about)
-            self.menuBar.add_command(label=language.labExit, command=self.win.quit)
-        elif self.OSname == 'aqua':
-            menubar = Menu(self.win, background='#ff8000', foreground='black', activebackground='white',
-                           activeforeground='black')
-            lan = Menu(menubar, tearoff=0)
-            lan.add_command(label=language.labEng, command=self._eng)
-            lan.add_command(label=language.labChi, command=self._chi)
-            menubar.add_cascade(label=language.labTrans, menu=lan)
-            help = Menu(menubar, tearoff=1)
-            help.add_command(label=language.labAbout, command=self.about)
-            menubar.add_cascade(label=language.labAbout, menu=help)
-            ext = Menu(menubar, tearoff=1, background='#ffcc99', foreground='black')
-            ext.add_command(label=language.labExit, command=self.win.quit)
-            menubar.add_cascade(label=language.labExit, menu=ext)
-            self.win.config(menu=menubar)
+        
+        self.buildMenu()
+        
 
         for key in self.lanDict:
             key.configure(text=self.lanDict[key])
 
+    def buildMenu(self):
+        self.menuBar = Menu(self.win)
+        self.win.configure(menu=self.menuBar)
+        
+        if self.OSname == 'win32':
+            self.win.iconbitmap(r'./images/Petoi.ico')
+        self.LanguageMenu = Menu(self.menuBar, tearoff=0)
+        self.LanguageMenu.add_command(label=self.language.labEng, command=self._eng)
+        self.LanguageMenu.add_command(label=self.language.labChi, command=self._chi)
+        self.menuBar.add_cascade(label=self.language.labTrans, menu=self.LanguageMenu)
+        
+        self.helpMenu = Menu(self.menuBar, tearoff=0)
+        self.helpMenu.add_command(label=self.language.labAbout, command=self.about)
+        self.menuBar.add_cascade(label=self.language.labHelp, menu=self.helpMenu)
+        
     def _chi(self):
         self.language = Language('chi')
         self.refreshLabels(self.language)
@@ -121,33 +114,8 @@ class App:
 
     def initWidgets(self):
         self.win.title(self.language.title)
+        self.buildMenu()
 
-        if self.OSname == 'win32':
-            self.win.iconbitmap(r'./images/Petoi.ico')
-            self.menuBar = Menu(self.win)
-            self.win.configure(menu=self.menuBar)
-            self.LanguageMenu = Menu(self.menuBar, tearoff=0)
-            self.menuBar.add_cascade(label=self.language.labTrans, menu=self.LanguageMenu)
-            self.LanguageMenu.add_command(label=self.language.labEng, command=self._eng)
-            self.LanguageMenu.add_command(label=self.language.labChi, command=self._chi)
-            self.menuBar.add_command(label=self.language.labAbout, command=self.about)
-            self.menuBar.add_command(label=self.language.labExit, command=self.win.quit)
-        elif self.OSname == 'aqua':
-            self.win.iconbitmap(r'./logo.icns')
-            self.win.option_add('*tearOff', FALSE)
-            menubar = Menu(self.win, background='#ff8000', foreground='black', activebackground='white',
-                           activeforeground='black')
-            lan = Menu(menubar, tearoff=0)
-            lan.add_command(label=self.language.labEng, command=self._eng)
-            lan.add_command(label=self.language.labChi, command=self._chi)
-            menubar.add_cascade(label=self.language.labTrans, menu=lan)
-            help = Menu(menubar, tearoff=1)
-            help.add_command(label=self.language.labAbout, command=self.about)
-            menubar.add_cascade(label=self.language.labAbout, menu=help)
-            ext = Menu(menubar, tearoff=1, background='#ffcc99', foreground='black')
-            ext.add_command(label=self.language.labExit, command=self.win.quit)
-            menubar.add_cascade(label=self.language.labExit, menu=ext)
-            self.win.config(menu=menubar)
 
         self.stFileDir = StringVar()
         self.stPort = StringVar()
@@ -211,18 +179,17 @@ class App:
         fmSerial.grid(row=1, ipadx=2, padx=2, sticky=W + E + N + S)
         self.labPort = ttk.Label(fmSerial, text=self.language.labPort, font=('Arial', 16))
         self.labPort.grid(row=0, ipadx=5, padx=5, sticky=W)
-        cb = ttk.Combobox(fmSerial, textvariable=self.stPort, width=20, font=12)
+        cb = ttk.Combobox(fmSerial, textvariable=self.stPort, foreground='blue', width=20, font=12)
 
         # list of serial port number
         port_list_number = []
         port_list = list(serial.tools.list_ports.comports())
-        if len(port_list) <= 0:
+        if len(port_list) == 0:
             port_list_number = [' ']
             print("The Serial port can't find!")
         else:
-            if len(port_list) == 1:
-                cb.set(port_list[0][0])
-            for each_port in port_list:
+            cb.set(port_list[-1][0])
+            for each_port in reversed(port_list):
                 port_list_number.append(each_port[0])
         # 为 Combobox 设置列表项
         cb['values'] = port_list_number
@@ -232,13 +199,13 @@ class App:
         fmSoftwareVersion.grid(row=2, ipadx=2, padx=2, sticky=W + E + N + S)
         self.labSoftwareVersion = ttk.Label(fmSoftwareVersion, text=self.language.labSoftwareVersion, font=('Arial', 16))
         self.labSoftwareVersion.grid(row=0, ipadx=5, padx=5, sticky=W)
-        cbSoftwareVersion = ttk.Combobox(fmSoftwareVersion, textvariable=self.strSoftwareVersion, width=20, font=12)
+        cbSoftwareVersion = ttk.Combobox(fmSoftwareVersion, textvariable=self.strSoftwareVersion, foreground='blue', width=20, font=12)
         cbSoftwareVersion.bind("<<ComboboxSelected>>",self.chooseSoftwareVersion)
 
         # list of board version
         software_version_list = ['1.0', '2.0']
         # 为 Combobox 设置默认项
-        cbSoftwareVersion.set(software_version_list[1])
+        cbSoftwareVersion.set(software_version_list[-1])
         # 为 Combobox 设置列表项
         cbSoftwareVersion['values'] = software_version_list
         cbSoftwareVersion.grid(row=1, ipadx=5, padx=5, sticky=W)
@@ -247,7 +214,7 @@ class App:
         fmBoardVersion.grid(row=3, ipadx=2, padx=2, sticky=W + E + N + S)
         self.labBoardVersion = ttk.Label(fmBoardVersion, text=self.language.labBoardVersion, font=('Arial', 16))
         self.labBoardVersion.grid(row=0, ipadx=5, padx=5, sticky=W)
-        cbBoardVersion = ttk.Combobox(fmBoardVersion, textvariable=self.strBoardVersion, width=20, font=12)
+        cbBoardVersion = ttk.Combobox(fmBoardVersion, textvariable=self.strBoardVersion, foreground='blue', width=20, font=12)
 
         # list of board version
         board_version_list = ['NyBoard_V1_0', 'NyBoard_V1_1']
@@ -559,25 +526,21 @@ class App:
 
             ret = call('./avrdude -C./avrdude.conf -v -patmega328p -carduino -P%s -b115200 -D -Uflash:w:%s:i' % \
                             (port, file), shell=self.shellOption)
-            print("ret = " + str(ret))
 
             if ret == 0:
-                if file == fnWriteI:
-                    self.stStatus.set(self.language.cbnFileWI + ' ' + self.language.labStatus3)
-                    self.statusBar.update()
-                    time.sleep(5)
-                    self.WriteInstinctProcess(port)
-                    time.sleep(3)
-                elif file == fnOpenCat:
-                    self.stStatus.set(self.language.cbnFileMF + ' ' + self.language.labStatus3)
-                    self.statusBar.update()
+                status =self.language.labStatus3
             else:
-                if file == fnWriteI:
-                    self.stStatus.set(self.language.cbnFileWI + ' ' + self.language.labStatus2)
-                    self.statusBar.update()
-                elif file == fnOpenCat:
-                    self.stStatus.set(self.language.cbnFileMF + ' ' + self.language.labStatus2)
-                    self.statusBar.update()
+                status = self.language.labStatus2
+            if file == fnWriteI:
+                self.stStatus.set(self.language.cbnFileWI + ' ' + status)
+                self.statusBar.update()
+                self.WriteInstinctProcess(port)
+                msgbox.showinfo(title=None, message=self.language.instinctFinish)
+            elif file == fnOpenCat:
+                self.stStatus.set(self.language.cbnFileMF + ' ' + status)
+                self.statusBar.update()
+                
+            if status == self.language.labStatus2:
                 return False
 
         print('Finish!')
