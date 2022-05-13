@@ -19,14 +19,14 @@ from languages import *
 
 FORMAT = '%(asctime)-15s %(name)s - %(levelname)s - %(message)s'
 '''
-Level: The level determines the minimum priority level of messages to log. 
-Messages will be logged in order of increasing severity: 
-DEBUG is the least threatening, 
-INFO is also not very threatening, 
-WARNING needs attention, 
-ERROR needs immediate attention, 
-and CRITICAL means “drop everything and find out what’s wrong.” 
-The default starting point is INFO, 
+Level: The level determines the minimum priority level of messages to log.
+Messages will be logged in order of increasing severity:
+DEBUG is the least threatening,
+INFO is also not very threatening,
+WARNING needs attention,
+ERROR needs immediate attention,
+and CRITICAL means “drop everything and find out what’s wrong.”
+The default starting point is INFO,
 which means that the logging module will automatically filter out any DEBUG messages.
 '''
 # logging.basicConfig(level=logging.DEBUG, format=FORMAT)
@@ -47,8 +47,7 @@ class App:
 
         if self.OSname == 'win32':
             self.shellOption = False
-        else:
-            self.shellOption = True
+
         self.win.update()
         tk.Grid.rowconfigure(self.win, 0, weight=1)
         tk.Grid.columnconfigure(self.win, 0, weight=1)
@@ -94,7 +93,7 @@ class App:
         self.win.configure(menu=self.menuBar)
         
         if self.OSname == 'win32':
-            self.win.iconbitmap(r'./images/Petoi.ico')
+            self.win.iconbitmap(r'./Petoi.ico')
         self.LanguageMenu = Menu(self.menuBar, tearoff=0)
         self.LanguageMenu.add_command(label=self.language.labEng, command=self._eng)
         self.LanguageMenu.add_command(label=self.language.labChi, command=self._chi)
@@ -157,7 +156,7 @@ class App:
         #            command=self.open_dir)  # 绑定 open_dir 方法
 
         self.btnFileDir = tk.Button(fmFileDir, text=self.language.btnFileDir, font=('Arial', 14), foreground='blue',
-                                        background=  self.backgroundColor, command=self.open_dir)  # 绑定 open_dir 方法
+                                        background=self.backgroundColor, command=self.open_dir)  # 绑定 open_dir 方法
         self.btnFileDir.grid(row=0, column=1, ipadx=5, padx=5, sticky=E)
 
         # self.entry = ttk.Entry(fmFileDir, textvariable=self.stFileDir,
@@ -509,7 +508,7 @@ class App:
         if (self.intVarWI.get() == 0) and (self.intVarOC.get() == 0):
             msgbox.showwarning(self.language.titleWarning, self.language.msgFirmware)
             self.force_focus()  # 强制主界面获取focus
-            return False 
+            return False
 
         ret = 0
         for file in filename:
@@ -534,8 +533,9 @@ class App:
             if file == fnWriteI:
                 self.stStatus.set(self.language.cbnFileWI + ' ' + status)
                 self.statusBar.update()
-                self.WriteInstinctProcess(port)
-                msgbox.showinfo(title=None, message=self.language.instinctFinish)
+                if ret == 0:
+                    self.WriteInstinctProcess(port)
+                    msgbox.showinfo(title=None, message=self.language.instinctFinish)
             elif file == fnOpenCat:
                 self.stStatus.set(self.language.cbnFileMF + ' ' + status)
                 self.statusBar.update()

@@ -16,6 +16,10 @@ OPTIONS = {
     'argv_emulation': False,
     'iconfile': 'logo.icns',
     'optimize': 2,
+    'includes':['pyserial'],
+    'frameworks':['./lib/libffi.7.dylib',
+                  './lib/libtcl8.6.dylib',
+                  './lib/libtk8.6.dylib'],
     'plist': {
         'CFBundleName': APP_NAME,
         'CFBundleDisplayName': APP_NAME,
