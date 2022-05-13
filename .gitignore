@@ -2,3 +2,4 @@
 *.pyc
 *.DS_Store
 release/
+__pycache__/
