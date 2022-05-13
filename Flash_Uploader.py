@@ -47,8 +47,7 @@ class App:
 
         if self.OSname == 'win32':
             self.shellOption = False
-        else:
-            self.shellOption = True
+
         self.win.update()
         tk.Grid.rowconfigure(self.win, 0, weight=1)
         tk.Grid.columnconfigure(self.win, 0, weight=1)
@@ -94,7 +93,7 @@ class App:
         self.win.configure(menu=self.menuBar)
         
         if self.OSname == 'win32':
-            self.win.iconbitmap(r'./images/Petoi.ico')
+            self.win.iconbitmap(r'./Petoi.ico')
         self.LanguageMenu = Menu(self.menuBar, tearoff=0)
         self.LanguageMenu.add_command(label=self.language.labEng, command=self._eng)
         self.LanguageMenu.add_command(label=self.language.labChi, command=self._chi)
@@ -157,7 +156,7 @@ class App:
         #            command=self.open_dir)  # 绑定 open_dir 方法
 
         self.btnFileDir = tk.Button(fmFileDir, text=self.language.btnFileDir, font=('Arial', 14), foreground='blue',
-                                        background=  self.backgroundColor, command=self.open_dir)  # 绑定 open_dir 方法
+                                        background=self.backgroundColor, command=self.open_dir)  # 绑定 open_dir 方法
         self.btnFileDir.grid(row=0, column=1, ipadx=5, padx=5, sticky=E)
 
         # self.entry = ttk.Entry(fmFileDir, textvariable=self.stFileDir,
@@ -489,7 +488,7 @@ class App:
         path = self.stFileDir.get() + "/" + strSoftwareVersion + "/" + strBoardVersion + "/" + strProd
         strFileName = self.strFileName.get()
         
-        fnWriteI =  path + "/WriteInstinct.ino.hex"
+        fnWriteI = path + "/WriteInstinct.ino.hex"
         fnOpenCat = path + "/" + strFileName
         filename = [fnWriteI, fnOpenCat]
         print(filename)
@@ -534,8 +533,9 @@ class App:
             if file == fnWriteI:
                 self.stStatus.set(self.language.cbnFileWI + ' ' + status)
                 self.statusBar.update()
-                self.WriteInstinctProcess(port)
-                msgbox.showinfo(title=None, message=self.language.instinctFinish)
+                if ret == 0:
+                    self.WriteInstinctProcess(port)
+                    msgbox.showinfo(title=None, message=self.language.instinctFinish)
             elif file == fnOpenCat:
                 self.stStatus.set(self.language.cbnFileMF + ' ' + status)
                 self.statusBar.update()
