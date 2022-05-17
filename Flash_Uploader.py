@@ -67,6 +67,8 @@ class App:
             self.labFileDir: language.labFileDir,
             self.btnFileDir: language.btnFileDir,
             self.labPort: language.labPort,
+            self.labSoftwareVersion: language.labSoftwareVersion,
+            self.labBoardVersion: language.labBoardVersion,
             self.labProduct: language.labProduct,
             self.labMode: language.labMode,
             self.rbnModes[0]: modeTuple[0],
