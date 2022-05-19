@@ -52,7 +52,7 @@ class Language():
         self.msgCalibrateIMU = '''校准 IMU? (Y/N)
         注意: 请确保将 Bittle / Nybble 保持水平放置。'''
         self.instinctFinish = '参数初始化完成！'
-        self.msgFinish = '固件上传完成!'
+        self.msgFinish = '固件烧录完成!'
         self.msgMode = '无效模式，请选择其他模式!'
         self.labStatusRest1 = '舵机校准参数清零......'
         self.labStatusRest12 = '舵机校准参数清零完成!'
@@ -85,7 +85,7 @@ class Language():
         self.rbnWalk = 'Walk'
         self.rbnUltrasonic = 'Ultrasonic'
         self.rbnCamera = 'Camera'
-        self.labFile = 'Select upload firmware:'
+        self.labFile = 'Select firmware:'
         self.cbnFileWI = 'Parameters'
         self.cbnFileMF = 'Main function'
         # self.labNote = '''Note: The program will calibrate IMU automatically 
