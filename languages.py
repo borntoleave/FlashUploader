@@ -29,7 +29,7 @@ class Language():
         # self.rbnModes = ('标准', '随机动作', '语音控制', '超声波', '摄像头')
         self.rbnBittleModes = ('标准', '随机动作', '语音控制', '摄像头')
         self.rbnNybbleModes = ('标准', '随机动作', '语音控制', '超声波')
-        self.labFile = '请选择需要烧录的固件:'
+        # self.labFile = '请选择需要烧录的固件:'
         self.cbnFileWI = '写入常数固件'
         self.cbnFileMF = '主功能固件'
         # self.labNote = '''注意：写入常数固件烧录完成后，程序将自动校准IMU，
@@ -38,7 +38,7 @@ class Language():
         self.titleWarning = "警告"
         self.msgFileDir = '请选择release文件夹!'
         self.msgPort = '请选择正确的串口!'
-        self.msgFirmware = '请至少选择一个固件!'
+        # self.msgFirmware = '请至少选择一个固件!'
         self.labStatus1 = '烧录 '
         self.labStatus2 = '烧录失败！'
         self.labStatus3 = '烧录成功！'
@@ -47,10 +47,11 @@ class Language():
         机器人固件烧录工具
         (C) 版权所有 2018-2022 派拓艺（深圳）科技有限责任公司
         https://www.petoi.com
+        20/05/2022
         '''
         self.msgRstOffsets = '舵机校准参数清零? (Y/N)'
         self.msgCalibrateIMU = '''校准 IMU? (Y/N)
-        注意: 请确保将 Bittle / Nybble 保持水平放置。'''
+        注意: 请务必将 Bittle / Nybble 保持水平放置!'''
         self.instinctFinish = '参数初始化完成！'
         self.msgFinish = '固件烧录完成!'
         self.msgMode = '无效模式，请选择其他模式!'
@@ -85,7 +86,7 @@ class Language():
         self.rbnWalk = 'Walk'
         self.rbnUltrasonic = 'Ultrasonic'
         self.rbnCamera = 'Camera'
-        self.labFile = 'Select firmware:'
+        # self.labFile = 'Select firmware:'
         self.cbnFileWI = 'Parameters'
         self.cbnFileMF = 'Main function'
         # self.labNote = '''Note: The program will calibrate IMU automatically 
@@ -99,16 +100,17 @@ class Language():
         self.labStatus3 = 'firmware uploaded successfully.'
         self.msgFileDir = 'Please choose the release folder!'
         self.msgPort = 'Please choose the correct serial port!'
-        self.msgFirmware = 'Please Select at least one firmware!'
+        # self.msgFirmware = 'Please Select at least one firmware!'
         self.titleVersion = 'Version information'
         self.msgVersion = '''Version: 1.0.0 
         Flash upload tool for robot.
         (C) Copyright 2018-2022 Petoi LLC. All rights reserved.
         https://www.petoi.com
+        20/05/2022
         '''
         self.msgRstOffsets = 'Reset joint offsets? (Y/N)'
         self.msgCalibrateIMU = '''Calibrate IMU? (Y/N)
-        Note: Lay the robot FLAT on a table'''
+        Note: Lay the robot FLAT on a table!'''
         self.instinctFinish = 'Parameters initialized!'
         self.msgFinish = 'Firmware upload complete!'
         self.msgMode = 'Invalide, please select another mode!'
