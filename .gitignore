@@ -1,4 +1,4 @@
-
+.idea/
 *.pyc
 *.DS_Store
 build/*
@@ -8,3 +8,4 @@ dist/*
 */lib*
 __pycache__/languages.cpython-39.pyc
 __pycache__/languages.cpython-39.pyc
+
