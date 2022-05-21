@@ -7,5 +7,5 @@ dist/*
 */dist
 */lib*
 __pycache__/languages.cpython-39.pyc
-__pycache__/languages.cpython-39.pyc
-
+*/.eggs/
+/.eggs/*

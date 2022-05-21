@@ -10,7 +10,7 @@ from setuptools import setup
 
 APP = ['Flash_Uploader.py']
 APP_NAME = "FlashUploader"
-DATA_FILES = ['defaultpath.txt', 'avrdude', 'avrdude.conf', 'logo.icns', './release']
+DATA_FILES = ['defaultConfig.txt', 'avrdude', 'avrdude.conf', 'logo.icns', './release']
 
 OPTIONS = {
     'argv_emulation': False,

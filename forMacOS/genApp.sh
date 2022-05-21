@@ -1,7 +1,7 @@
+cp ../defaultConfig.txt .
 cp ../languages.py .
 cp ../SerialCommunication.py .
 cp ../Flash_Uploader.py .
-cp ../defaultpath.txt .
 cp -r ../release .
 #
 python3 setup.py py2app -A
